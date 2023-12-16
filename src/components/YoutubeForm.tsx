@@ -44,7 +44,10 @@ const getFieldValues = async () =>{
     }
   });
   const {register, control, handleSubmit, formState, reset, watch, getValues, setValue} = form; 
-  const {errors, touchedFields, dirtyFields, isDirty, isValid} = formState; 
+  const {errors, touchedFields, dirtyFields, isDirty, isValid, isSubmitting, isSubmitted, isSubmitSuccessful, submitCount } = formState; 
+
+  console.log(isSubmitting, isSubmitted, isSubmitSuccessful, submitCount, "isSubmitting, isSubmitted");
+  
 
   // console.log({touchedFields, dirtyFields, isDirty, isValid}, "touchedFields, dirtyFields");
   

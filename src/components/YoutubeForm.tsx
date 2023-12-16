@@ -1,5 +1,6 @@
 import { useForm, useFieldArray } from "react-hook-form"
 import { DevTool } from "@hookform/devtools"
+import { useEffect } from "react"
 
 type FormValues = {
   username: string,
@@ -12,7 +13,9 @@ type FormValues = {
   phoneNumbers: string[],
   phNumbers: {
     number: string,
-  }[]
+  }[],
+  age: number,
+  dob: Date,
 }
 
 const YoutubeForm = () => {
@@ -34,11 +37,13 @@ const getValues = async () =>{
           facebook: '',
         },
         phoneNumbers: ["", ""],
-        phNumbers: [{number: ''}]
+        phNumbers: [{number: ''}],
+        age: 0,
+        dob: new Date(),
       }
     }
   });
-  const {register, control, handleSubmit, formState, reset} = form; 
+  const {register, control, handleSubmit, formState, reset, watch} = form; 
   const {errors} = formState; 
 
   const { fields, append, remove } = useFieldArray({
@@ -52,9 +57,18 @@ const getValues = async () =>{
     reset();
   }
 
+  const watchUsername = watch("username")
+
+  useEffect(() =>{
+     const subscription = watch((value) =>{
+      console.log(value, "etsyu");
+     })
+     return () => subscription.unsubscribe()
+  }, [watch])
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
-   
+   <h1>{watchUsername}</h1>
    <div className="form-control">
    <label htmlFor="username">Username</label>
     <input 
@@ -141,6 +155,31 @@ const getValues = async () =>{
         onClick={()=> append({number: ""})}>Add Phone Number</button>
 
       </div>
+    </div>
+    <br />
+
+    <div className="form-control">
+    <label htmlFor="age">Age</label>
+    <input type="number" id="age" {...register("age", {
+      valueAsNumber: true,
+       required: {
+        value: true,
+        message: 'Age is required',
+       }
+    })} />
+    <p className="error">{errors?.age?.message}</p>
+    </div>
+
+    <div className="form-control">
+    <label htmlFor="dob">Date Of Birth</label>
+    <input type="date" id="dob" {...register("dob", {
+      valueAsDate: true,
+       required: {
+        value: true,
+        message: 'date ge is required',
+       }
+    })} />
+    <p className="error">{errors?.age?.message}</p>
     </div>
 
     <button>Submit</button>

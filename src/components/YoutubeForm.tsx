@@ -44,7 +44,10 @@ const getFieldValues = async () =>{
     }
   });
   const {register, control, handleSubmit, formState, reset, watch, getValues, setValue} = form; 
-  const {errors} = formState; 
+  const {errors, touchedFields, dirtyFields} = formState; 
+
+  console.log({touchedFields, dirtyFields}, "touchedFields, dirtyFields");
+  
 
   const { fields, append, remove } = useFieldArray({
     name: 'phNumbers',

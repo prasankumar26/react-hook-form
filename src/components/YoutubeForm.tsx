@@ -44,9 +44,9 @@ const getFieldValues = async () =>{
     }
   });
   const {register, control, handleSubmit, formState, reset, watch, getValues, setValue} = form; 
-  const {errors, touchedFields, dirtyFields} = formState; 
+  const {errors, touchedFields, dirtyFields, isDirty, isValid} = formState; 
 
-  // console.log({touchedFields, dirtyFields}, "touchedFields, dirtyFields");
+  // console.log({touchedFields, dirtyFields, isDirty, isValid}, "touchedFields, dirtyFields");
   
 
   const { fields, append, remove } = useFieldArray({
@@ -208,7 +208,7 @@ const getFieldValues = async () =>{
     <p className="error">{errors?.age?.message}</p>
     </div>
 
-    <button>Submit</button> <br />
+    <button disabled={!isDirty || !isValid}>Submit</button> <br />
     <button onClick={handleGetValues} type="button">Get Values</button> <br />
     <button onClick={handleSetValues} type="button">Set Values</button>
   </form>

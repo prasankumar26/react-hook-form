@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form"
+import { useForm, useFieldArray } from "react-hook-form"
 import { DevTool } from "@hookform/devtools"
 
 type FormValues = {
@@ -9,7 +9,10 @@ type FormValues = {
     twitter: string,
     facebook: string,
   },
-  phoneNumbers: string[]
+  phoneNumbers: string[],
+  phNumbers: {
+    number: string,
+  }[]
 }
 
 const YoutubeForm = () => {
@@ -31,15 +34,21 @@ const getValues = async () =>{
           facebook: '',
         },
         phoneNumbers: ["", ""],
+        phNumbers: [{number: ''}]
       }
     }
   });
   const {register, control, handleSubmit, formState, reset} = form; 
   const {errors} = formState; 
 
+  const { fields, append, remove } = useFieldArray({
+    name: 'phNumbers',
+    control
+  })
+
   const onSubmit = (data:FormValues) =>{
     console.log("form submitted", data);
-    alert(JSON.stringify(data))
+    // alert(JSON.stringify(data))
     reset();
   }
 
@@ -103,10 +112,35 @@ const getValues = async () =>{
     <input type="text" id="primary-phone" {...register("phoneNumbers.0")} />
     </div>
 
-
     <div className="form-control">
     <label htmlFor="secondary-phone">Secondary Phone Number</label>
     <input type="text" id="secondary-phone" {...register("phoneNumbers.1")} />
+    </div>
+
+    <div>
+      <label>List of Phone Numbers</label>
+      <div>
+        {fields.map((field, index) => {
+          return (
+            <>
+            {index > 0 && <div className="form-control" key={field.id} style={{display: 'flex'}}>
+             <div>
+             <input type="text" 
+              {...register(`phNumbers.${index}.number` as const)}
+             />
+             </div>
+             <div>
+                <button className="btn" type="button" 
+                onClick={()=> remove(index)}>Remove</button>        
+             </div>
+          </div>}
+            </>
+          )
+        })}
+        <button className="btn" type="button" 
+        onClick={()=> append({number: ""})}>Add Phone Number</button>
+
+      </div>
     </div>
 
     <button>Submit</button>

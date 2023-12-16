@@ -9,12 +9,13 @@ type FormValues = {
 
 const YoutubeForm = () => {
   const form = useForm<FormValues>();
-  const {register, control, handleSubmit, formState} = form; 
+  const {register, control, handleSubmit, formState, reset} = form; 
   const {errors} = formState; 
 
   const onSubmit = (data:FormValues) =>{
     console.log("form submitted", data);
     alert(JSON.stringify(data))
+    reset();
   }
 
   return (

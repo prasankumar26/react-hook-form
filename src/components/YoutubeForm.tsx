@@ -1,4 +1,4 @@
-import { useForm, useFieldArray } from "react-hook-form"
+import { useForm, useFieldArray, FieldErrors } from "react-hook-form"
 import { DevTool } from "@hookform/devtools"
 import { useEffect } from "react"
 
@@ -46,13 +46,17 @@ const getFieldValues = async () =>{
   const {register, control, handleSubmit, formState, reset, watch, getValues, setValue} = form; 
   const {errors, touchedFields, dirtyFields} = formState; 
 
-  console.log({touchedFields, dirtyFields}, "touchedFields, dirtyFields");
+  // console.log({touchedFields, dirtyFields}, "touchedFields, dirtyFields");
   
 
   const { fields, append, remove } = useFieldArray({
     name: 'phNumbers',
     control
   })
+
+  const onError = (errors: FieldErrors<FormValues>) =>{
+     console.log("Form errors ", errors);
+  }
 
   const onSubmit = (data:FormValues) =>{
     console.log("form submitted", data);
@@ -89,7 +93,7 @@ const getFieldValues = async () =>{
 
   return (
     <>
-    <form onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
    <h1>{watchUsername}</h1>
    <div className="form-control">
    <label htmlFor="username">Username</label>

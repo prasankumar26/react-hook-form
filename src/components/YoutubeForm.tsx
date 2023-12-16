@@ -19,7 +19,7 @@ type FormValues = {
 }
 
 const YoutubeForm = () => {
-const getValues = async () =>{
+const getFieldValues = async () =>{
   const response = await fetch('https://jsonplaceholder.typicode.com/users/1')
   const data = await response.json()
   return data;
@@ -27,7 +27,7 @@ const getValues = async () =>{
 
   const form = useForm<FormValues>({
     defaultValues: async () =>{
-      const res = await getValues()
+      const res = await getFieldValues()
       return {
         username: res.username,
         email: res.email,
@@ -43,7 +43,7 @@ const getValues = async () =>{
       }
     }
   });
-  const {register, control, handleSubmit, formState, reset, watch} = form; 
+  const {register, control, handleSubmit, formState, reset, watch, getValues} = form; 
   const {errors} = formState; 
 
   const { fields, append, remove } = useFieldArray({
@@ -61,12 +61,18 @@ const getValues = async () =>{
 
   useEffect(() =>{
      const subscription = watch((value) =>{
-      console.log(value, "etsyu");
+      // console.log(value, "value");
      })
      return () => subscription.unsubscribe()
   }, [watch])
 
+
+  const handleGetValues = () =>{
+     console.log("Get values", getValues("social"));
+  }
+
   return (
+    <>
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
    <h1>{watchUsername}</h1>
    <div className="form-control">
@@ -183,8 +189,10 @@ const getValues = async () =>{
     </div>
 
     <button>Submit</button>
-    <DevTool control={control} />
+    <button onClick={handleGetValues} type="button">Get Values</button>
   </form>
+    <DevTool control={control} />
+    </>
   )
 }
 

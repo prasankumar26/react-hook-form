@@ -126,6 +126,11 @@ const getFieldValues = async () =>{
         },
         notBlackListed: (fieldValue) =>{
           return !fieldValue.endsWith("baddomain.com")
+        },
+        emailAvailable: async (fieldValue) =>{
+          const response = await fetch(`https://jsonplaceholder.typicode.com/users?email=${fieldValue}`)
+          const data = await response.json()
+          return data.length === 0 || "Email already exist"
         }
        }
     })} />
@@ -211,7 +216,7 @@ const getFieldValues = async () =>{
     <p className="error">{errors?.age?.message}</p>
     </div>
 
-    <button disabled={!isDirty || !isValid}>Submit</button> <br />
+    <button disabled={!isDirty}>Submit</button> <br />
     <button onClick={handleGetValues} type="button">Get Values</button> <br />
     <button onClick={handleSetValues} type="button">Set Values</button>
   </form>

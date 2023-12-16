@@ -43,7 +43,7 @@ const getFieldValues = async () =>{
       }
     }
   });
-  const {register, control, handleSubmit, formState, reset, watch, getValues} = form; 
+  const {register, control, handleSubmit, formState, reset, watch, getValues, setValue} = form; 
   const {errors} = formState; 
 
   const { fields, append, remove } = useFieldArray({
@@ -69,6 +69,19 @@ const getFieldValues = async () =>{
 
   const handleGetValues = () =>{
      console.log("Get values", getValues("social"));
+  }
+
+  const handleSetValues = () =>{
+     setValue("username", "", {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true
+    })
+     setValue("email", "", {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true
+    })
   }
 
   return (
@@ -188,8 +201,9 @@ const getFieldValues = async () =>{
     <p className="error">{errors?.age?.message}</p>
     </div>
 
-    <button>Submit</button>
-    <button onClick={handleGetValues} type="button">Get Values</button>
+    <button>Submit</button> <br />
+    <button onClick={handleGetValues} type="button">Get Values</button> <br />
+    <button onClick={handleSetValues} type="button">Set Values</button>
   </form>
     <DevTool control={control} />
     </>

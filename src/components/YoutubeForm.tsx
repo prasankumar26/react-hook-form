@@ -39,6 +39,16 @@ const YoutubeForm = () => {
        pattern: {
          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
          message: 'Invalid email address'
+       },
+       validate: {
+        notAdmin: (fieldValue) =>{
+          return (
+             fieldValue !== "admin@example.com" || "Enter a different email address"
+          )
+        },
+        notBlackListed: (fieldValue) =>{
+          return !fieldValue.endsWith("baddomain.com")
+        }
        }
     })} />
     <p className="error">{errors?.email?.message}</p>
